@@ -1,43 +1,37 @@
 import sys
 import re
+from commandG import intersection
 # import numpy
 
 address_db = {}
 
-
-    # datalist = []
-    # if data == '':
-    #     print(len(datalist))
-    # else:
-    #     datalist.append(data)
-        # print(len(datalist))
-# from typing import List, Any
-
-# address = [a "weber" (1,2)(1,3)(1,5)(3,4)]  # type: List[address]
 def add_address():
-    street = re.compile(r"([a])(\s\"[A-Za-z]+\"\s)((\(-?\d+,-?\d+\))*)")
+    street = re.compile(r"([a])(\s\"[A-Za-z\s]+\"\s)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
-        name = groups[1]
-        coordinate_str = re.findall(r'(\(-?\d+,-?\d+\))', groups[2])
+        name = groups[1].strip()
+        coordinate_str = re.findall(r'(\(\s*-?\d+\s*,\s*-?\d+\s*\))', groups[2])
         coordinates = []
         for coord in coordinate_str:
             coord = coord.replace('(', '').replace(')', '')
             temp_coord = coord.split(",")
             coordinates.append([int(temp_coord[0]), int(temp_coord[1])])
-        address_db[name]=coordinates
+        if name not in address_db:
+            address_db[name] = coordinates
+        else:
+            print ("Error: Address name already exists, use 'c' to change street")
     else:
-        print ("Error!")
+        print ("Error: invalid command")
         pass
 
 def change_address():
-        street = re.compile(r"([c])(\s\"[A-Za-z]+\"\s)((\(-?\d+,-?\d+\))*)")
+        street = re.compile(r"([c])(\s\"[A-Za-z\s]+\"\s)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
         matches = street.match(address)
         if street.match(address):
             groups = matches.groups()
-            name = groups[1]
-            coordinate_str = re.findall(r'(\(-?\d+,-?\d+\))', groups[2])
+            name = groups[1].strip()
+            coordinate_str = re.findall(r'(\(\s*-?\d+\s*,\s*-?\d+\s*\))', groups[2])
             coordinates = []
             for coord in coordinate_str:
                 coord = coord.replace('(', '').replace(')', '')
@@ -46,28 +40,91 @@ def change_address():
             if name in address_db:
                 address_db[name] = coordinates
             else:
-                print ("Address not found")
+                print ("Error: Address not found")
         else:
-            print ("Error!")
+            print ("Error: invalid!")
             pass
 
 
 def remove_address():
-    street = re.compile(r"([r])(\s\"[A-Za-z]+\")")
+    street = re.compile(r"([r])(\s\"[A-Za-z\s]+\")")
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
-        name = groups[1]
+        name = groups[1].strip()
         if name in address_db:
             address_db.pop(name)
         else:
-            print ("Address not found")
+            print ("Error: Address not found")
     else:
-        print ("Error!")
+        print ("Error: invalid!")
         pass
     # else:
         # print ("Error!")
 
+def graph():
+    # Regular expression for graph
+    V = []
+    E = []
+    num = 1
+    # print address_db
+
+    for street_a in address_db:
+        coordinates = address_db[street_a]
+        for i in range(len(coordinates)-1):
+            # print street_a, coordinates[i], coordinates[i+1]
+            for street_b in address_db:
+                if street_a == street_b:
+                    continue
+                coordinates_b = address_db[street_b]
+                for j in range(len(coordinates_b) - 1):
+                     # print street_b, coordinates_b[j], coordinates_b[j + 1]
+                    x1, y1 = coordinates[i][0], coordinates[i][1]
+                    x2, y2 = coordinates[i+1][0], coordinates[i+1][1]
+                    x3, y3 = coordinates_b[j][0], coordinates_b[j][1]
+                    x4, y4 = coordinates_b[j+1][0], coordinates_b[j+1][1]
+                    x, y = intersection(x1,x2,x3,x4,y1,y2,y3,y4)
+                    # print 'for points a: ', coordinates[i], coordinates[i+1], ' and b: ', coordinates_b[j], coordinates_b[j+1], ' intersection is: ', x, y
+                    if x is not None:
+                        add_arr = [coordinates[i], coordinates[i + 1], coordinates_b[j], coordinates_b[j + 1], [x, y]]
+
+                        # Add vertices
+                        for coordinate in add_arr:
+                            if coordinate not in V:
+                                V.append(coordinate)
+
+                        # Add edges
+                        add_arr_index = [V.index(x)+1 for x in add_arr]
+
+                        edge1 = sorted([add_arr_index[0], add_arr_index[4]])
+                        if edge1 not in E:
+                            E.append(edge1)
+
+                        edge2 = sorted([add_arr_index[4], add_arr_index[1]])
+                        if edge2 not in E:
+                            E.append(edge2)
+
+                        edge3 = sorted([add_arr_index[2], add_arr_index[4]])
+                        if edge3 not in E:
+                            E.append(edge3)
+
+                        edge4 = sorted([add_arr_index[4], add_arr_index[3]])
+                        if edge4 not in E:
+                            E.append(edge4)
+
+    print 'V = {'
+    for index in range(len(V)):
+        print index+1, ': (', V[index][0], ',', V[index][1], ')'
+    print '}'
+
+    print 'E = {'
+    for edge in E:
+        print '<',edge[0],',',edge[1],'>'
+    print'}'
+
+
+    #             for j in range(len(coordinates_b)-1):
+    #
 
 if __name__ == '__main__':
     while True:
@@ -81,6 +138,8 @@ if __name__ == '__main__':
             change_address()
         elif address[0] == 'r':
             remove_address()
-    #    (a|c|r|g)
-    #     print
-
+        elif address[0] == 'g':
+            graph()
+        else:
+            print ("Error: please use command line")
+            sys.exit(0)
