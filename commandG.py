@@ -1,5 +1,6 @@
 from fractions import Fraction as fr
 import decimal as dec
+import math
 
 
 def intersection(x1, x2, x3, x4, y1, y2, y3, y4):
@@ -40,8 +41,24 @@ def intersection(x1, x2, x3, x4, y1, y2, y3, y4):
     else:
         return None, None
 
+def on_segment(x1,x2,y1,y2,x,y):
+    crossproduct = (y - y1) * (x2 - x1) - (x - x1) * (y2 - y1)
+
+    # compare versus epsilon for floating point values, or != 0 if using integers
+    if abs(crossproduct) > 0.0000001:
+        return False
+
+    dotproduct = (x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)
+    if dotproduct < 0:
+        return False
+
+    squaredlengthba = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)
+    if dotproduct > squaredlengthba:
+        return False
+
+    return True
 
 
-
-
-
+def caldist(x1, y1, x2, y2):
+    dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    return dist
