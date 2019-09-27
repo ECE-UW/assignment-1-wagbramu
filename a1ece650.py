@@ -46,9 +46,9 @@ def add_address():
         if name not in address_db:
             address_db[name] = coordinates
         else:
-            print ("Error: Address name already exists, use 'c' to change street")
+            print >> sys.stderr, "Error: Address name already exists, use 'c' to change street"
     else:
-        print ("Error: invalid command")
+        print >> sys.stderr, "Error: Make Sure inputs are valid"
         pass
 
 def change_address():
@@ -66,9 +66,9 @@ def change_address():
             if name in address_db:
                 address_db[name] = coordinates
             else:
-                print ("Error: Address not found")
+                print >> sys.stderr, "Error: Address not found"
         else:
-            print ("Error: invalid!")
+            print >> sys.stderr, "Error: invalid!"
             pass
 
 
@@ -81,12 +81,11 @@ def remove_address():
         if name in address_db:
             address_db.pop(name)
         else:
-            print ("Error: Address not found")
+            print >> sys.stderr, "Error: Address not found"
     else:
-        print ("Error: invalid!")
+        print >> sys.stderr, "Error: invalid command"
         pass
-    # else:
-        # print ("Error!")
+
 
 def graph():
     # Regular expression for graph
@@ -226,7 +225,7 @@ def main():
         elif address[0] == 'g':
             graph()
         else:
-            print ("Error: please use command line")
+            print >> sys.stderr, "Error: please use command line"
     sys.exit(0)
 if __name__ == '__main__':
     main()
