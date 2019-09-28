@@ -173,18 +173,17 @@ def graph():
                         if edge4 not in E:
                             E.append(edge4)
 
-    print 'V = {'
+    print >> sys.stdout, 'V = {'
     for index in range(len(V)):
-        print('{0}: ({1},{2})'.format(index+1, V[index][0], V[index][1]))
+        print >> sys.stdout, ('{0}: ({1},{2})'.format(index+1, V[index][0], V[index][1]))
     # print index+1, ': (',V[index][0],',',V[index][1],')' --- changed format to the above to eliminate spaces
-    print '}'
+    print >> sys.stdout, '}'
 
-    # print("}")
-    print 'E = {'
+    print >> sys.stdout, 'E = {'
     for edge in E:
         # print '<',edge[0],',',edge[1],'>'
-        print ("<{0},{1}>".format(edge[0],edge[1]))
-    print '}'
+        print >> sys.stdout, ("<{0},{1}>,".format(edge[0],edge[1]))
+    print >> sys.stdout, '}'
 
 
 def main():
@@ -207,6 +206,3 @@ def main():
     sys.exit(0)
 if __name__ == '__main__':
     main()
-
-
-
