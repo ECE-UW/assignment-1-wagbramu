@@ -175,13 +175,17 @@ def graph():
 
     print 'V = {'
     for index in range(len(V)):
-        print index+1, ': (',V[index][0],',',V[index][1],')'
+        print('{0}: ({1},{2})'.format(index+1, V[index][0], V[index][1]))
+    # print index+1, ': (',V[index][0],',',V[index][1],')' --- changed format to the above to eliminate spaces
     print '}'
 
+    # print("}")
     print 'E = {'
     for edge in E:
-        print '<',edge[0],',',edge[1],'>'
-    print'}'
+        # print '<',edge[0],',',edge[1],'>'
+        print ("<{0},{1}>".format(edge[0],edge[1]))
+    print '}'
+
 
 def main():
     global address
