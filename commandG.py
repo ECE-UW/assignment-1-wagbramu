@@ -17,8 +17,10 @@ def intersection(x1, x2, x3, x4, y1, y2, y3, y4):
         # print 'denom=0', [x1,y1], [x2,y2], [x3,y3], [x4,y4]
         return None, None
     # intersecting coordinates
-    x = numerator1 / denominator
-    y = numerator2 / denominator
+    xa = numerator1 / denominator
+    x = round(xa, 2)
+    ya = numerator2 / denominator
+    y = round(ya, 2)
     if (x2 - x1) == 0:
         rx0 = -1
     else:

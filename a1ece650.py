@@ -1,32 +1,8 @@
-# import sys
-#
-# # YOUR CODE GOES HERE
-#
-# def main():
-#     ### YOUR MAIN CODE GOES HERE
-#
-#     ### sample code to read from stdin.
-#     ### make sure to remove all spurious print statements as required
-#     ### by the assignment
-#     while True:
-#         line = sys.stdin.readline()
-#         if line == '':
-#             break
-#         print 'read a line:', line
-#
-#     print 'Finished reading input'
-#     # return exit code 0 on successful termination
-#     sys.exit(0)
-#
-# if __name__ == '__main__':
-#     main()
-
 import sys
 import re
 from commandG import intersection
 from commandG import caldist
 from commandG import on_segment
-# import numpy
 
 address_db = {}
 address = None
@@ -36,7 +12,9 @@ def add_address():
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
-        name = groups[1].strip()
+        name = groups[1].strip().lower()
+        # name_str = re.findall(r'(\s\"[A-Za-z\s]+\"\s)')
+        # for nam in
         coordinate_str = re.findall(r'(\(\s*-?\d+\s*,\s*-?\d+\s*\))', groups[2])
         coordinates = []
         for coord in coordinate_str:
@@ -56,7 +34,7 @@ def change_address():
         matches = street.match(address)
         if street.match(address):
             groups = matches.groups()
-            name = groups[1].strip()
+            name = groups[1].strip().lower()
             coordinate_str = re.findall(r'(\(\s*-?\d+\s*,\s*-?\d+\s*\))', groups[2])
             coordinates = []
             for coord in coordinate_str:
@@ -71,13 +49,12 @@ def change_address():
             print >> sys.stderr, "Error: invalid!"
             pass
 
-
 def remove_address():
     street = re.compile(r"([r])(\s\"[A-Za-z\s]+\")")
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
-        name = groups[1].strip()
+        name = groups[1].strip().lower()
         if name in address_db:
             address_db.pop(name)
         else:
@@ -85,7 +62,6 @@ def remove_address():
     else:
         print >> sys.stderr, "Error: invalid command"
         pass
-
 
 def graph():
     # Regular expression for graph
@@ -197,11 +173,9 @@ def graph():
                         if edge4 not in E:
                             E.append(edge4)
 
-
-
     print 'V = {'
     for index in range(len(V)):
-        print index+1, ': (', V[index][0], ',', V[index][1], ')'
+        print index+1, ': (',V[index][0],',',V[index][1],')'
     print '}'
 
     print 'E = {'
@@ -231,4 +205,4 @@ if __name__ == '__main__':
     main()
 
 
-# main()
+
