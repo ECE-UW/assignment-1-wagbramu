@@ -8,7 +8,7 @@ address_db = {}
 address = None
 
 def add_address():
-    street = re.compile(r"([a])(\s\"[A-Za-z\s]+\"\s)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
+    street = re.compile(r"([a])(\s*\"[A-Za-z\s]+\"\s*)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
@@ -30,7 +30,7 @@ def add_address():
         pass
 
 def change_address():
-        street = re.compile(r"([c])(\s\"[A-Za-z\s]+\"\s)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
+        street = re.compile(r"([c])(\s*\"[A-Za-z\s]+\"\s*)((\(\s*-?\d+\s*,\s*-?\d+\s*\)\s*)*)")
         matches = street.match(address)
         if street.match(address):
             groups = matches.groups()
@@ -50,7 +50,7 @@ def change_address():
             pass
 
 def remove_address():
-    street = re.compile(r"([r])(\s\"[A-Za-z\s]+\")")
+    street = re.compile(r"([r])(\s*\"[A-Za-z\s]+\")")
     matches = street.match(address)
     if street.match(address):
         groups = matches.groups()
@@ -173,17 +173,17 @@ def graph():
                         if edge4 not in E:
                             E.append(edge4)
 
-    print >> sys.stdout, 'V = {'
+    print >> sys.stderr, 'V = {'
     for index in range(len(V)):
-        print >> sys.stdout, ('{0}: ({1},{2})'.format(index+1, V[index][0], V[index][1]))
+        print >> sys.stderr, ('{0}: ({1},{2})'.format(index+1, V[index][0], V[index][1]))
     # print index+1, ': (',V[index][0],',',V[index][1],')' --- changed format to the above to eliminate spaces
-    print >> sys.stdout, '}'
+    print >> sys.stderr, '}'
 
-    print >> sys.stdout, 'E = {'
+    print >> sys.stderr, 'E = {'
     for edge in E:
         # print '<',edge[0],',',edge[1],'>'
-        print >> sys.stdout, ("<{0},{1}>,".format(edge[0],edge[1]))
-    print >> sys.stdout, '}'
+        print >> sys.stderr, ("<{0},{1}>,".format(edge[0],edge[1]))
+    print >> sys.stderr, '}'
 
 
 def main():
