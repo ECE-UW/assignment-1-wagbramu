@@ -178,11 +178,16 @@ def graph():
         print ('{0}: ({1:.2f},{2:.2f})'.format(index+1, V[index][0], V[index][1]))
     # print index+1, ': (',V[index][0],',',V[index][1],')' --- changed format to the above to eliminate spaces
     print '}'
-
+    var = len(E)-1
+    counter = 0
     print 'E = {'
     for edge in E:
         # print '<',edge[0],',',edge[1],'>'
-        print ("<{0},{1}>,".format(edge[0],edge[1]))
+        if counter <= var-1:
+            print ("<{0},{1}>,".format(edge[0],edge[1]))
+        else:
+            print ("<{0},{1}>".format(edge[0], edge[1]))
+        counter = counter + 1
     print '}'
 
 
