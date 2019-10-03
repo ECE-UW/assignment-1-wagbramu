@@ -68,7 +68,7 @@ def graph():
     V = []
     E = []
     num = 1
-    # print address_db
+
 
     for street_a in address_db:
         coordinates = address_db[street_a]
